@@ -5,9 +5,9 @@
       :config="tableConfig"
       :data="tableData"
       :page.sync="page"
-      :load="getUserPoiPage"
+      :load="getPage"
     />
-    <dForm v-if="dialogName == 'dForm'" :id="propId" :mode="mode" @refresh="getUserPoiPage" @close="closeDialog" />
+    <dForm v-if="dialogName === 'dForm'" :id="propId" :mode="mode" @refresh="getPage" @close="closeDialog" />
   </div>
 </template>
 
@@ -45,43 +45,51 @@ export default {
         ],
         column: [
           {
-            name: 'uId',
-            label: 'uId'
+            name: 'uid',
+            label: '用户id'
           },
           {
             name: 'poiId',
-            label: ''
+            label: '美团店铺id'
           },
           {
             name: 'poiName',
-            label: ''
+            label: '美团店铺名称',
+            search: 'true',
+            xType: 'input'
+          },
+          {
+            name: 'remark',
+            label: '备注'
           }
         ],
         operate: [
           {
             text: '编辑',
-            show: _this.checkPermission(['userPoi.edit']),
+            show: _this.checkPermission(['UserPoi', 'UserPoi.edit']),
             click: data => _this.operate('edit', data)
           },
           {
             text: '删除',
-            show: _this.checkPermission(['userPoi.del']),
+            show: _this.checkPermission(['UserPoi', 'UserPoi.del']),
             click: _this.del
           },
           {
             text: '详情',
             show: true,
-            click: data => { _this.operate('detail', data) }
+            click: data => {
+              _this.operate('detail', data)
+            }
           }
         ]
       }
     }
   },
   mounted() {
-    this.getUserPoiPage()
+    this.getPage()
   },
   methods: {
-    getUserPoiPage() {
+    getPage() {
       this.loading++
       getUserPoiPage(this.searchData, this.page.pageNum, this.page.pageSize).then(res => {
         this.tableData = res.data
@@ -98,7 +106,7 @@ export default {
         this.loading++
         deleteUserPoi(data.id).then(res => {
           this.$message.success(res.msg)
-          this.getUserPoiPage()
+          this.getPage()
         }).catch(e => console.log(e)).finally(() => this.loading--)
       }).catch(e => console.log(e))
     },

@@ -8,7 +8,7 @@
 
 <script>
 import { getUserPoiDetail, saveUserPoi } from '@/api/userpoi'
-// eslint-disable-next-line no-unused-vars
+import { importRules } from '@/utils/index'
 export default {
   props: {
     mode: { // edit, detail, add
@@ -39,25 +39,38 @@ export default {
         item: [
           {
             xType: 'input',
-            name: 'uId',
-            label: ''
+            name: 'uid',
+            label: 'uid',
+            rules: importRules('inputRequired')
           },
           {
             xType: 'input',
             name: 'poiId',
-            label: ''
+            label: 'poiId',
+            rules: importRules('inputRequired')
           },
           {
             xType: 'input',
             name: 'poiName',
-            label: ''
+            label: 'poiName',
+            rules: importRules('inputRequired')
+          },
+          {
+            xType: 'input',
+            name: 'remark',
+            label: '备注'
+          },
+          {
+            xType: 'input',
+            name: 'creatorName',
+            label: '创建者'
           }
         ],
         operate: [
           {
             text: '保存',
             show: _this.showBtn,
-            click: _this.saveUserPoi
+            click: _this.save
           },
           {
             text: '取消',
@@ -76,11 +89,11 @@ export default {
         }
         if (this.mode === 'edit') {
           this.dialogTitle = '编辑'
-          this.getUserPoiDetail()
+          this.getDetail()
         }
         if (this.mode === 'detail') {
           this.dialogTitle = '详情'
-          this.getUserPoiDetail()
+          this.getDetail()
           this.formDisabled = true
           this.showBtn = false
         }
@@ -89,13 +102,13 @@ export default {
     }
   },
   methods: {
-    getUserPoiDetail() {
+    getDetail() {
       this.loading++
       getUserPoiDetail(this.id).then(res => {
         this.formData = res
       }).catch(e => console.error(e)).finally(() => this.loading--)
     },
-    saveUserPoi() {
+    save() {
       this.$refs['xForm'].validate().then(() => {
         this.loading++
         saveUserPoi(this.formData).then(res => {
