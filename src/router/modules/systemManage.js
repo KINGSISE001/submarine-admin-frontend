@@ -40,6 +40,12 @@ const systemManageRouter = {
       component: () => import('@/views/system/manage/dictionary/index'),
       name: 'dictionary',
       meta: { title: '字典管理', icon: 'dictionary', permission: ['dictionary'] }
+    },
+    {
+      path: 'userPoi',
+      component: () => import('@/views/system/manage/userPoi/index'),
+      name: 'userPoi',
+      meta: { title: '门店管理', icon: 'dictionary', permission: ['userPoi'] }
     }
   ]
 }

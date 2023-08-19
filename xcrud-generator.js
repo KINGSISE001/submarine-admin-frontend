@@ -1,15 +1,15 @@
 module.exports = {
   db: {
-    host: '192.168.39.36',
+    host: '127.0.0.1',
     user: 'root',
-    password: 'root',
+    password: '123456',
     database: 'submarine'
   },
   mixin: {
     frontRootPath: '.',
-    backRootPath: 'C:/Users/charles/Desktop/project/java/submarine-admin-backend',
-    module: 'system.workflow',
-    modulePath: 'system/workflow',
+    backRootPath: 'C:/Users/RISE/Desktop/新建文件夹',
+    module: 'mt.order',
+    modulePath: 'mt/order',
     entity: '',
     Entity: '',
     entityZh: ''

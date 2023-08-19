@@ -25,7 +25,7 @@ const actions = {
       //   mutationPrefix: 'SOCKET_'
       // },
       options: {
-        path: api.state.baseUrl + '/socket.io',
+        path: api.state.baseApi + '/socket.io',
         transports: ['websocket']
       }
     })

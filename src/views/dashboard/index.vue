@@ -6,14 +6,28 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
 export default {
   name: 'Dashboard',
   computed: {
     ...mapGetters([
       'name'
     ])
+  },
+  beforeDestroy() {
+  },
+  created() {
+    if (!this.$socket) return
+    this.sockets.subscribe('welcome', data => { // 组件内监听
+      this.$notify.info({
+        title: '消息',
+        message: data
+      })
+    })
+  },
+  methods: {
+
   }
+
 }
 </script>
 
