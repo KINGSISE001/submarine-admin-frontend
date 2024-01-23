@@ -1,18 +1,105 @@
 <template>
   <div v-loading="loading" class="app-container">
-    <x-table
+    <el-form :inline="true" :model="searchData" class="demo-form-inline">
+      <el-form-item label="美团名称">
+        <el-input v-model="searchData.poiName" placeholder="美团名称" />
+      </el-form-item>
+      <el-form-item label="用户账号">
+        <el-select
+          v-model="value"
+          filterable
+          clearable
+          :loading="false"
+          placeholder="用户账号"
+          :options="userData"
+          @change="onChange"
+        >
+          <el-option
+            v-for="item in userData"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-if="checkPermission(['userPoi', 'userPoi.find'])" type="primary" @click="getPage()">查询</el-button>
+        <el-button v-if="checkPermission(['userPoi', 'userPoi.add'])" type="success" @click="operate('add')">新增</el-button>
+      </el-form-item>
+    </el-form>
+    <el-table
       v-model="searchData"
-      :config="tableConfig"
       :data="tableData"
+      :config="tableConfig"
       :page.sync="page"
       :load="getPage"
-    />
+      border
+      style="width: 100%"
+    >
+      <el-table-column
+        fixed
+        prop="name"
+        label="用户账号"
+        width="100"
+      />
+      <el-table-column
+        prop="userName"
+        label="用户名"
+        width="110"
+      />
+      <el-table-column
+        prop="poiId"
+        label="美团ID"
+        width="120"
+      />
+      <el-table-column
+        prop="poiName"
+        label="美团名称"
+        width="180"
+      />
+      <el-table-column
+        prop="poiStatus"
+        label="美团状态"
+        width="100"
+      />
+      <el-table-column
+        prop="eleId"
+        label="饿了么ID"
+        width="120"
+      />
+      <el-table-column
+        prop="eleName"
+        label="饿了么名称"
+        width="160"
+      />
+      <el-table-column
+        prop="eleStatus"
+        label="饿了么状态"
+        width="100"
+      />
+      <el-table-column
+        prop="remark"
+        label="备注"
+        width="120"
+      />
+      <el-table-column
+        label="操作"
+        width="120"
+      >
+        <template v-slot="scope">
+          <el-button type="text" size="small" @click="operate('detail',scope.row)">查看</el-button>
+          <el-button v-if="checkPermission(['userPoi', 'userPoi.edit'])" type="text" size="small" @click="operate('edit',scope.row)">编辑</el-button>
+          <el-button v-if="checkPermission(['userPoi', 'userPoi.del'])" type="text" size="small" @click="del(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <dForm v-if="dialogName === 'dForm'" :id="propId" :mode="mode" @refresh="getPage" @close="closeDialog" />
   </div>
 </template>
 
 <script>
-import { getUserPoiPage, deleteUserPoi } from '@/api/userpoi'
+import { getUserPoiPage, deleteUserPoi } from '@/api/userPoi'
+import { getUserList } from '@/api/user'
 import dForm from './form'
 
 export default {
@@ -21,6 +108,7 @@ export default {
   },
   data() {
     return {
+      value: '',
       loading: 0,
       tableData: [],
       page: {
@@ -28,67 +116,37 @@ export default {
         pageSize: 10,
         total: 0
       },
-      searchData: {},
+      searchData: {
+        poiName: '',
+        name: '',
+        uId: ''
+      },
+      mode: '',
+      userData: {},
       propId: '',
       dialogName: ''
     }
   },
   computed: {
+    // eslint-disable-next-line vue/return-in-computed-property
     tableConfig() {
-      const _this = this
-      return {
-        stripe: true,
-        search: true,
-        reset: true,
-        btn: [
-          { text: '新增', click: () => _this.operate('add'), icon: 'el-icon-circle-plus' }
-        ],
-        column: [
-          {
-            name: 'uid',
-            label: '用户id'
-          },
-          {
-            name: 'poiId',
-            label: '美团店铺id'
-          },
-          {
-            name: 'poiName',
-            label: '美团店铺名称',
-            search: 'true',
-            xType: 'input'
-          },
-          {
-            name: 'remark',
-            label: '备注'
-          }
-        ],
-        operate: [
-          {
-            text: '编辑',
-            show: _this.checkPermission(['UserPoi', 'UserPoi.edit']),
-            click: data => _this.operate('edit', data)
-          },
-          {
-            text: '删除',
-            show: _this.checkPermission(['UserPoi', 'UserPoi.del']),
-            click: _this.del
-          },
-          {
-            text: '详情',
-            show: true,
-            click: data => {
-              _this.operate('detail', data)
-            }
-          }
-        ]
-      }
     }
   },
   mounted() {
     this.getPage()
+    this.getUserLists()
   },
   methods: {
+    onChange(value) {
+      this.searchData.uId = value
+    },
+    getUserLists() {
+      this.loading++
+      getUserList(this.searchData).then(res => {
+        this.userData = res
+        console.log(JSON.stringify(this.userData))
+      }).catch(e => console.error(e)).finally(() => this.loading--)
+    },
     getPage() {
       this.loading++
       getUserPoiPage(this.searchData, this.page.pageNum, this.page.pageSize).then(res => {

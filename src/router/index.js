@@ -8,7 +8,6 @@ import Layout from '@/layout'
 
 import systemManageRouter from '@/router/modules/systemManage'
 import systemToolRouter from '@/router/modules/systemTool'
-import systemWorkflowRouter from '@/router/modules/systemWorkflow'
 export const constantRoutes = [
   {
     path: '/login',
@@ -66,7 +65,6 @@ export const asyncRoutes = [
 
   systemManageRouter,
   systemToolRouter,
-  systemWorkflowRouter,
 
   // ===========引入router模块 end=============
 

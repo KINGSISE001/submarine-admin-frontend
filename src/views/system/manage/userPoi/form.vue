@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getUserPoiDetail, saveUserPoi } from '@/api/userpoi'
+import { getUserPoiDetail, saveUserPoi } from '@/api/userPoi'
 import { importRules } from '@/utils/index'
 export default {
   props: {
