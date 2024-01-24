@@ -1,14 +1,97 @@
 <template>
   <div class="app-container">
-    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="520px" :close-on-click-modal="false" @closed="$emit('close')">
-      <x-form ref="xForm" v-model="formData" v-loading="loading" :config="formConfig" />
+    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false" @closed="$emit('close')">
+      <el-form
+        ref="xForm"
+        :model="formData"
+        :rules="rules"
+        label-position="labelPosition"
+        label-width="120px"
+        size="mini"
+        label-suffix=":"
+      >
+        <el-form-item label="用户名" prop="uid">
+          <el-select
+            v-model="formData.uId"
+            filterable
+            clearable
+            :loading="false"
+            placeholder="用户名"
+            :options="userData"
+            @change="onChange"
+          >
+            <el-option
+              v-for="item in userData"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="美团名称" prop="poiName">
+          <el-input v-model="formData.poiName" />
+        </el-form-item>
+        <el-form-item label="美团ID" prop="poiId">
+          <el-input v-model="formData.poiId" />
+        </el-form-item>
+        <el-form-item label="美团状态" prop="poiStatus">
+          <el-switch
+            v-model="formData.poiStatus"
+            style="display: block"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="开启"
+            :active-value="1"
+            :inactive-value="0"
+            inactive-text="关闭"
+          />
+        </el-form-item>
+        <el-form-item label="饿了么名称" prop="eleName">
+          <el-input v-model="formData.eleName" />
+        </el-form-item>
+        <el-form-item label="饿了么ID" prop="eleId">
+          <el-input v-model="formData.eleId" />
+        </el-form-item>
+        <el-form-item label="饿了么状态" prop="eleStatus">
+          <el-switch
+            v-model="formData.eleStatus"
+            style="display: block"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="开启"
+            :active-value="1"
+            :inactive-value="0"
+            inactive-text="关闭"
+          />
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="formData.remark" />
+        </el-form-item>
+        <el-form-item label="数据字典" prop="">
+          <el-select v-model="formData.status" placeholder="请选择状态">
+            <el-option
+              v-for="item in treeData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button v-if="showBtn" type="primary" @click="save('formData')">提交</el-button>
+          <el-button v-if="showBtn" type="success" @click="resetForm">重置</el-button>
+          <el-button @click="() => { dialogVisible = false }">取消</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import { getUserPoiDetail, saveUserPoi } from '@/api/userPoi'
-import { importRules } from '@/utils/index'
+import { importRules, importDic } from '@/utils/index'
+import { getUserList } from '@/api/user'
+import dic from '@/store/modules/dic'
 export default {
   props: {
     mode: { // edit, detail, add
@@ -22,63 +105,35 @@ export default {
   },
   data() {
     return {
+      labelPosition: 'left',
+      value: '',
+      userData: {},
+      treeData: importDic('sex'),
       loading: 0,
       dialogVisible: true,
-      formData: {},
+      formData: {
+        uid: '',
+        userName: '',
+        poiName: '',
+        poiId: '',
+        poiStatus: '',
+        eleName: '',
+        eleId: '',
+        eleStatus: '',
+        remark: '' },
       formDisabled: false,
       dialogTitle: '编辑',
-      showBtn: true
+      showBtn: true,
+      rules: {
+        uid: importRules('selectRequired'),
+        poiName: importRules('inputRequired'),
+        poiId: importRules('inputRequired')
+      }
     }
   },
   computed: {
-    formConfig() {
-      const _this = this
-      return {
-        disabled: _this.formDisabled,
-        inline: false,
-        item: [
-          {
-            xType: 'input',
-            name: 'uid',
-            label: 'uid',
-            rules: importRules('inputRequired')
-          },
-          {
-            xType: 'input',
-            name: 'poiId',
-            label: 'poiId',
-            rules: importRules('inputRequired')
-          },
-          {
-            xType: 'input',
-            name: 'poiName',
-            label: 'poiName',
-            rules: importRules('inputRequired')
-          },
-          {
-            xType: 'input',
-            name: 'remark',
-            label: '备注'
-          },
-          {
-            xType: 'input',
-            name: 'creatorName',
-            label: '创建者'
-          }
-        ],
-        operate: [
-          {
-            text: '保存',
-            show: _this.showBtn,
-            click: _this.save
-          },
-          {
-            text: '取消',
-            show: _this.showBtn,
-            click: () => { _this.dialogVisible = false }
-          }
-        ]
-      }
+    dic() {
+      return dic
     }
   },
   watch: {
@@ -101,7 +156,24 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+    this.getUserLists()
+  },
   methods: {
+    onChange(value) {
+      this.formData.uId = value
+      this.formData.uid = value
+    },
+    getUserLists() {
+      this.loading++
+      getUserList(this.searchData).then(res => {
+        this.userData = res
+        console.log(JSON.stringify(this.userData))
+      }).catch(e => console.error(e)).finally(() => this.loading--)
+    },
+    resetForm(formName) {
+      this.$refs.xForm.resetFields()
+    },
     getDetail() {
       this.loading++
       getUserPoiDetail(this.id).then(res => {

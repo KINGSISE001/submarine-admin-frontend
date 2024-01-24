@@ -34,17 +34,19 @@
       :page.sync="page"
       :load="getPage"
       border
+      fit
+      highlight-current-row
       style="width: 100%"
     >
       <el-table-column
         fixed
         prop="name"
-        label="用户账号"
+        label="用户名"
         width="100"
       />
       <el-table-column
         prop="userName"
-        label="用户名"
+        label="用户账号"
         width="110"
       />
       <el-table-column
@@ -55,13 +57,20 @@
       <el-table-column
         prop="poiName"
         label="美团名称"
-        width="180"
+        width="220"
       />
       <el-table-column
         prop="poiStatus"
         label="美团状态"
         width="100"
-      />
+      >
+        <template v-slot="scope">
+          <div>
+            <el-tag v-if="scope.row.poiStatus === 0" effect="dark" type="danger">关闭</el-tag>
+            <el-tag v-if="scope.row.poiStatus === 1" effect="dark" type="success">开启</el-tag>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="eleId"
         label="饿了么ID"
@@ -70,13 +79,20 @@
       <el-table-column
         prop="eleName"
         label="饿了么名称"
-        width="160"
+        width="220"
       />
       <el-table-column
         prop="eleStatus"
         label="饿了么状态"
         width="100"
-      />
+      >
+        <template v-slot="scope">
+          <div>
+            <el-tag v-if="scope.row.eleStatus === 0" effect="dark" type="danger">关闭</el-tag>
+            <el-tag v-if="scope.row.eleStatus === 1" effect="dark" type="success">开启</el-tag>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="remark"
         label="备注"
