@@ -67,16 +67,6 @@
         <el-form-item label="备注" prop="remark">
           <el-input v-model="formData.remark" />
         </el-form-item>
-        <el-form-item label="数据字典" prop="">
-          <el-select v-model="formData.status" placeholder="请选择状态">
-            <el-option
-              v-for="item in treeData"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
         <el-form-item>
           <el-button v-if="showBtn" type="primary" @click="save('formData')">提交</el-button>
           <el-button v-if="showBtn" type="success" @click="resetForm">重置</el-button>
