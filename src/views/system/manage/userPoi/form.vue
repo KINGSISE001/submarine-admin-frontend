@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false" @closed="$emit('close')">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" @closed="$emit('close')">
       <el-form
         ref="xForm"
         :model="formData"
