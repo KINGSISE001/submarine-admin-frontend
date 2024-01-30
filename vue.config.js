@@ -2,7 +2,6 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -33,8 +32,9 @@ module.exports = {
   devServer: {
     port: port,
     open: false,
-    client: {
-      overlay: false
+    overlay: {
+      warnings: false,
+      errors: true
     },
     proxy: {
       // change xxx-api/login => mock/login
@@ -54,7 +54,6 @@ module.exports = {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
-    plugins: [new NodePolyfillPlugin()],
     resolve: {
       alias: {
         '@': resolve('src')
@@ -103,7 +102,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
