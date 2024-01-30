@@ -43,11 +43,27 @@ export default {
     Breadcrumb,
     Hamburger
   },
+
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar'
     ])
+  },
+  mounted() {
+  },
+  beforeDestroy() { // 订阅事件记得要取消---否则多次订阅会引发多次消息返回
+    if (!this.$socket) return
+    this.sockets.unsubscribe('welcome')
+  },
+  created() {
+    if (!this.$socket) return
+    this.sockets.subscribe('welcome', data => { // 组件内监听
+      this.$notify.info({
+        title: '消息',
+        message: data
+      })
+    })
   },
   methods: {
     toggleSideBar() {
