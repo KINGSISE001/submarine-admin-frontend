@@ -10,7 +10,7 @@
         size="mini"
         label-suffix=":"
       >
-        <el-form-item label="用户名" prop="uid">
+        <el-form-item label="用户名" prop="uId">
           <el-select
             v-model="formData.uId"
             filterable
@@ -27,6 +27,9 @@
               :value="item.id"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="门店名称" prop="storeName">
+          <el-input v-model="formData.storeName" />
         </el-form-item>
         <el-form-item label="美团名称" prop="poiName">
           <el-input v-model="formData.poiName" />
@@ -102,7 +105,8 @@ export default {
       loading: 0,
       dialogVisible: true,
       formData: {
-        uid: '',
+        uId: '',
+        storeName: '',
         userName: '',
         poiName: '',
         poiId: '',
@@ -115,9 +119,8 @@ export default {
       dialogTitle: '编辑',
       showBtn: true,
       rules: {
-        uid: importRules('selectRequired'),
-        poiName: importRules('inputRequired'),
-        poiId: importRules('inputRequired')
+        storeName: importRules('inputRequired'),
+        uId: importRules('selectRequired')
       }
     }
   },
@@ -152,7 +155,6 @@ export default {
   methods: {
     onChange(value) {
       this.formData.uId = value
-      this.formData.uid = value
     },
     getUserLists() {
       this.loading++

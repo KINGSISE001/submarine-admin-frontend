@@ -50,6 +50,11 @@
         width="110"
       />
       <el-table-column
+        prop="storeName"
+        label="门店名称"
+        width="120"
+      />
+      <el-table-column
         prop="poiId"
         label="美团ID"
         width="120"
