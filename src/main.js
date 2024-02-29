@@ -44,7 +44,7 @@ new Vue({
   router,
   store,
   render: h => h(App),
-  sockets: {
+  sockets: { // 监听用的是this.sockets   发送消息是this.$socket，不要弄混
     connecting() { console.log('正在连接') },
     connect() { console.log('连接成功') },
     disconnect() { console.log('断开连接') },

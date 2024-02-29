@@ -1,8 +1,5 @@
 # submarine-admin-frontend
 
-本项目基于 [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template) 进行二次开发，配后后端项目 [submarine-admin-backend](https://github.com/GoldSubmarine/submarine-admin-frontend) 可快速开发后台项目。
-
-> vue-admin-template 是一个极简的 vue admin 管理后台。它只包含了 Element UI & axios & iconfont & permission control & lint，这些搭建后台必要的东西。其他功能集成，可从 [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin) 拷贝过来
 
 ## 快速开始
 

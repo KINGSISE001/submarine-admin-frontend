@@ -43,7 +43,6 @@ export default {
     Breadcrumb,
     Hamburger
   },
-
   computed: {
     ...mapGetters([
       'sidebar',
@@ -58,6 +57,12 @@ export default {
   },
   created() {
     if (!this.$socket) return
+    this.sockets.subscribe('Connect', data => { // 组件内监听
+      this.$notify.info({
+        title: '消息',
+        message: data
+      })
+    })
     this.sockets.subscribe('welcome', data => { // 组件内监听
       this.$notify.info({
         title: '消息',
