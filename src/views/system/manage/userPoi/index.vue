@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import { getUserPoiPage, deleteUserPoi } from '@/api/userPoi'
+import { getUserPoiPage, deleteUserPoi } from '@/api/userpoi'
 import { getUserList } from '@/api/user'
 import dForm from './form'
 

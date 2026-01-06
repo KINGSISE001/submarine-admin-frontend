@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { getUserPoiDetail, saveUserPoi } from '@/api/userPoi'
+import { getUserPoiDetail, saveUserPoi } from '@/api/userpoi'
 import { importRules, importDic } from '@/utils/index'
 import { getUserList } from '@/api/user'
 import dic from '@/store/modules/dic'

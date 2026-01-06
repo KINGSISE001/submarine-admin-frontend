@@ -46,6 +46,12 @@ const systemManageRouter = {
       component: () => import('@/views/system/manage/userPoi/index'),
       name: 'userpoi',
       meta: { title: '门店管理', icon: 'dictionary', permission: ['userPoi'] }
+    },
+    {
+      path: 'Completedorder',
+      component: () => import('@/views/mt/order/completedOrder/index'),
+      name: 'Completedorder',
+      meta: { title: '订单管理', icon: 'dictionary', permission: ['Completedorder'] }
     }
   ]
 }

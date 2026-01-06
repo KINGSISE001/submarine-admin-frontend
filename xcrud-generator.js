@@ -1,13 +1,14 @@
 module.exports = {
   db: {
-    host: '127.0.0.1',
+    host: 'cs.91ikang.com',
+    port: 6603,
     user: 'root',
-    password: '123456',
+    password: '93bed72517ff68bf',
     database: 'submarine'
   },
   mixin: {
     frontRootPath: '.',
-    backRootPath: 'C:/Users/RISE/Desktop/新建文件夹',
+    backRootPath: 'C:/Users/ws/Desktop/新建文件夹',
     module: 'mt.order',
     modulePath: 'mt/order',
     entity: '',

@@ -32,6 +32,7 @@
     "file-saver": "^2.0.2",
     "html2canvas": "^1.0.0-rc.5",
     "js-cookie": "2.2.1",
+    "minimatch": "^5.0.1",
     "normalize.css": "8.0.1",
     "nprogress": "0.2.0",
     "numericjs": "^1.2.6",
@@ -43,6 +44,10 @@
     "vue-socket.io": "^3.0.10",
     "vuex": "3.1.2",
     "xcrud": "0.3.15"
+  },
+  "resolutions": {
+    "minimatch": "^9.0.5",
+    "commander": "^9.5.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
@@ -61,8 +66,8 @@
     "lint-staged": "^9.4.2",
     "mockjs": "1.1.0",
     "runjs": "^4.3.2",
-    "sass": "^1.26.8",
-    "sass-loader": "^8.0.0",
+    "sass": "^1.97.2",
+    "sass-loader": "^8.0.2",
     "script-ext-html-webpack-plugin": "2.1.4",
     "serve-static": "^1.13.2",
     "svg-sprite-loader": "4.1.6",
