@@ -2,7 +2,7 @@
   <div v-loading="loading" class="app-container">
 
     <el-drawer
-      title="我是外面的 Drawer"
+      title="订单明细"
       :visible.sync="drawer"
       size="60%"
       :show-close="true"
@@ -21,12 +21,12 @@
           <el-table-column
             prop="foodName"
             label="名称"
-            width="200"
+            width="220"
           />
           <el-table-column
             prop="spec"
             label="规格"
-            width="180"
+            width="160"
           />
           <el-table-column
             prop="quantity"
@@ -65,6 +65,11 @@
           />
         </el-table>
 
+        <el-card class="box-card">
+          <div class="block">
+            <el-rate :colors="colors" />
+          </div>
+        </el-card>
       </div>
     </el-drawer>
     <x-table
@@ -73,7 +78,13 @@
       :data="tableData"
       :page.sync="page"
       :load="getCompletedorderPage"
-    />
+    >
+      <template #orderId="scope">
+        <el-tag @click="operate(scope.row)">
+          {{ scope.row.orderId }}
+        </el-tag>
+      </template>
+    </x-table>
   </div>
 
 </template>
@@ -84,6 +95,7 @@ import { getCompletedorderDetail, getCompletedorderPage } from '@/api/completedo
 export default {
   data() {
     return {
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
       drawer: false,
       innerDrawer: false,
       loading: 0,
@@ -109,7 +121,7 @@ export default {
   },
   computed: {
     tableConfig() {
-      const _this = this
+      // const _this = this
       return {
         stripe: true,
         search: true,
@@ -123,7 +135,8 @@ export default {
             label: '订单号',
             width: 170,
             search: 'true',
-            xType: 'input'
+            xType: 'input',
+            slot: true
           },
           /* {
             name: 'orderTagList',
@@ -404,7 +417,7 @@ export default {
           }
         ],
         operate: [
-          {
+          /* {
             text: '编辑',
             show: _this.checkPermission(['completedOrder.edit']),
             click: data => _this.operate('edit', data)
@@ -420,7 +433,7 @@ export default {
             click: data => {
               _this.operate(data)
             }
-          }
+          }*/
         ]
       }
     }
@@ -440,9 +453,9 @@ export default {
       this.searchdetailData.orderId = data.orderId
       this.drawer = true
       this.loading++
-      getCompletedorderDetail(this.searchdetailData).then(ress => {
-        this.detailData = ress.rows
-        console.log(ress.rows)
+      getCompletedorderDetail(this.searchdetailData).then(res => {
+        this.detailData = res.rows
+        console.log(res.rows)
       }).catch(e => console.error(e)).finally(() => this.loading--)
     },
     closeDialog() {
