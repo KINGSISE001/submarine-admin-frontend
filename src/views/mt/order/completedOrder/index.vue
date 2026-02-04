@@ -67,9 +67,26 @@
 
         <el-card class="box-card">
           <div class="block">
-            <el-rate :colors="colors" />
+            <el-rate
+              v-model="detailData.length"
+              :colors="colors"
+            />
           </div>
+          <div class="block" style="padding-top: 30px ">
+            <el-timeline :reverse="reverse">
+              <el-timeline-item
+                v-for="(activity, index) in activities"
+                :key="index"
+                color="#E6A23C"
+                :timestamp="activity.createdTime"
+              >
+                {{ activity.title }}-{{ activity.content }}
+              </el-timeline-item>
+            </el-timeline>
+          </div>
+
         </el-card>
+
       </div>
     </el-drawer>
     <x-table
@@ -90,7 +107,7 @@
 </template>
 
 <script>
-import { getCompletedorderDetail, getCompletedorderPage } from '@/api/completedorder'
+import { getCompletedorderDetail, getCompletedorderPage, getOrderLogList } from '@/api/completedorder'
 
 export default {
   data() {
@@ -101,6 +118,7 @@ export default {
       loading: 0,
       tableData: [],
       detailData: [],
+      activities: [],
       page: {
         pageNum: 1,
         pageSize: 10,
@@ -455,7 +473,14 @@ export default {
       this.loading++
       getCompletedorderDetail(this.searchdetailData).then(res => {
         this.detailData = res.rows
-        console.log(res.rows)
+        this.operates(this.searchdetailData)
+      }).catch(e => console.error(e)).finally(() => this.loading--)
+    },
+
+    operates(datas) {
+      this.loading++
+      getOrderLogList(datas).then(res => {
+        this.activities = res.rows
       }).catch(e => console.error(e)).finally(() => this.loading--)
     },
     closeDialog() {

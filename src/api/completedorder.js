@@ -38,6 +38,18 @@ export function getCompletedorderDetail(params) {
     }
   })
 }
+/**
+ * 流水
+ */
+export function getOrderLogList(params) {
+  return request({
+    url: '/order/orderLogList/',
+    method: 'get',
+    params: {
+      ...params
+    }
+  })
+}
 
 /**
  * 保存
